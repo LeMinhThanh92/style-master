@@ -1,8 +1,23 @@
 import {Card, CardContent, Grid} from "@mui/material";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {InputLabelMui} from "../../muicomponent/inputlabel";
 
 function SaPage() {
+
+useEffect(()=>{
+    const storedata = sessionStorage.getItem('sm');
+    if (storedata !==null) {
+        const data = JSON.parse(storedata);
+        if (data !==null && data.styleMasterCode) {
+            setCuttingSMV(data.cuttingSMV?.toString())
+            setSewing(data.sewing?.toString())
+            setInspect(data.inspect?.toString())
+            setPress(data.press?.toString())
+            setFinishing(data.finishing?.toString())
+            setTotalSewIPFSMV(data.totalSIPFSMV?.toString())
+        }
+    }
+},[sessionStorage.getItem('sm')])
 
     const [cuttingSMV, setCuttingSMV] = useState<number|undefined|string>(undefined)
     const [press, setPress] = useState<number|undefined|string>(undefined)
@@ -21,22 +36,22 @@ function SaPage() {
                           alignItems={'stretch'}
                           spacing={2}>
                         <Grid item xs={12} md={3}>
-                            <InputLabelMui setValue={setCuttingSMV} labelName={'Cutting SMV'} valueName={cuttingSMV}/>
+                            <InputLabelMui fullwidth={true} setValue={setCuttingSMV} labelName={'Cutting SMV'} valueName={cuttingSMV}/>
                         </Grid>
                         <Grid item xs={12} md={3}>
-                            <InputLabelMui setValue={setSewing} labelName={'Sewing'} valueName={sewing}/>
+                            <InputLabelMui fullwidth={true} setValue={setSewing} labelName={'Sewing'} valueName={sewing}/>
                         </Grid>
                         <Grid item xs={12} md={3}>
-                            <InputLabelMui setValue={setInspect} labelName={'Inspect'} valueName={inspect}/>
+                            <InputLabelMui fullwidth={true} setValue={setInspect} labelName={'Inspect'} valueName={inspect}/>
                         </Grid>
                         <Grid item xs={12} md={3}>
-                            <InputLabelMui setValue={setPress} labelName={'Press'} valueName={press}/>
+                            <InputLabelMui fullwidth={true} setValue={setPress} labelName={'Press'} valueName={press}/>
                         </Grid>
                         <Grid item xs={12} md={3}>
-                            <InputLabelMui setValue={setFinishing} labelName={'Finishing'} valueName={finishing}/>
+                            <InputLabelMui fullwidth={true} setValue={setFinishing} labelName={'Finishing'} valueName={finishing}/>
                         </Grid>
                         <Grid item xs={12} md={3}>
-                            <InputLabelMui setValue={setTotalSewIPFSMV} labelName={'Total Sew IPF SMV'} valueName={totalSewIPFSMV}/>
+                            <InputLabelMui fullwidth={true} setValue={setTotalSewIPFSMV} labelName={'Total Sew IPF SMV'} valueName={totalSewIPFSMV}/>
                         </Grid>
                     </Grid>
                 </CardContent>

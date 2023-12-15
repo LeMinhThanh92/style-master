@@ -6,13 +6,22 @@ interface DialogProps {
     title?: string
     actionname: string
     content?: any
+    fullscreen?: boolean
 }
 
-export function MuiDialog({open, setOpen, title, actionname, content}: DialogProps) {
+export function MuiDialog({open, setOpen, title, actionname, content, fullscreen}: DialogProps) {
 
 
     return (
-        <Dialog fullScreen open={open} onClose={() => setOpen(false)} aria-labelledby='dialog-title'
+        <Dialog sx={{
+            width: '75%',
+            height: '75%',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%,-50%)'
+        }}
+                fullScreen open={open} onClose={() => setOpen(false)} aria-labelledby='dialog-title'
                 aria-describedby='dialog-description'>
             <DialogTitle id='dialog-title'>{title}</DialogTitle>
             <DialogContent>

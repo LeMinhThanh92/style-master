@@ -12,6 +12,7 @@ interface InputLabelProps {
     rownum?: number
     multiline?: boolean
     onEnterPress?: () => void
+    fullwidth?: boolean
 }
 
 export function InputLabelMui({
@@ -25,7 +26,8 @@ export function InputLabelMui({
                                   enable,
                                   rownum,
                                   multiline,
-                                  onEnterPress
+                                  onEnterPress,
+                                  fullwidth,
                               }: InputLabelProps) {
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter" && onEnterPress) {
@@ -33,11 +35,11 @@ export function InputLabelMui({
         }
     };
     return (
-        <FormControl fullWidth>
+        <FormControl fullWidth={fullwidth}>
             <InputLabel htmlFor={id} error={inputError}>
                 {labelName}
             </InputLabel>
-            <OutlinedInput fullWidth
+            <OutlinedInput
                            sx={{borderRadius: '16px', background: 'initial'}}
                            rows={rownum}
                            multiline={multiline}

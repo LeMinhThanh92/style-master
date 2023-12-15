@@ -3,7 +3,7 @@ import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import LoginPage from "./content/login";
 import {HelmetProvider} from "react-helmet-async";
 import {createContext, useMemo, useState} from "react";
-import {createTheme, ThemeProvider} from "@mui/material";
+import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
 import {blue} from "@mui/material/colors";
 import {SnackbarProvider} from "notistack";
 import SidebarLayout from "./layouts/SidebarLayout";
@@ -17,7 +17,7 @@ export const ColorModeContext = createContext({
 
 export default function App() {
 
-    const [mode, setMode] = useState<'light' | 'dark'>('light');
+    const [mode, setMode] = useState<'light' | 'dark'>('dark');
     const colorMode = useMemo(
         () => ({
             toggleColorMode: () => {
@@ -43,8 +43,8 @@ export default function App() {
                                 primary: '#D7D7D9',
                             },
                             background: {
-                                default: '#333333',
-                                paper: '#222222',
+                                default: '#444444',
+                                paper: '#333333',
                             },
                         }
                         : {}),
@@ -77,7 +77,7 @@ export default function App() {
                         styleOverrides: {
                             root: {
                                 '&:hover': {
-                                    backgroundColor: '#B6D6F2',
+                                    backgroundColor: '#FFE4E1',
                                     color:'black'
                                 },
 
@@ -97,8 +97,7 @@ export default function App() {
                                 fontSize:16
                             }
                         }
-                    }
-
+                    },
                 },
             }),
         [mode]
@@ -109,6 +108,7 @@ export default function App() {
             <ThemeProvider theme={theme}>
                 <HelmetProvider>
                     <SnackbarProvider anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+                        <CssBaseline />
                         <BrowserRouter>
                             <Routes>
                                 <Route path={'/'} element={<LoginPage/>}></Route>

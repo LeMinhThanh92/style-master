@@ -73,7 +73,7 @@ function LgPage() {
             sx={{height: '100vh'}}
             spacing={1}
         >
-          <Grid item xs={12} md={6} alignItems={'center'}>
+          <Grid item xs={12} md={4} alignItems={'center'}>
             <Grid container
                   direction={'row'}
                   justifyContent={'center'}
@@ -88,7 +88,7 @@ function LgPage() {
                         Login
                       </Typography>
 
-                      <InputLabelMui
+                      <InputLabelMui fullwidth={true}
                           id='outline-username'
                           labelName='Username'
                           valueName={username}
@@ -98,7 +98,7 @@ function LgPage() {
                           endAdornment={<PersonOutline/>}
                       />
 
-                      <InputLabelMui
+                      <InputLabelMui fullwidth={true}
                           id='outline-password'
                           labelName='Password'
                           valueName={password}
@@ -130,7 +130,7 @@ function LgPage() {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={8}>
             <Avatar
                 variant={'square'}
                 alt={'Login'}

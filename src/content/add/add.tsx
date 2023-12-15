@@ -1,8 +1,8 @@
-import {Box, Card, CardContent, Grid, Tab, Typography} from "@mui/material";
+import {Box, Card, CardContent, Grid, Tab} from "@mui/material";
 import {TabContext, TabList, TabPanel} from "@mui/lab";
-import {MuiAutocomplete} from "../muicomponent/autocomplete";
+import {AutocompleteFormat, MuiAutocomplete} from "../muicomponent/autocomplete";
 import {InputLabelMui} from "../muicomponent/inputlabel";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import SamPage from "./sam";
 import PrintPage from "./printing";
 import EmbPage from "./emb";
@@ -14,15 +14,40 @@ import SubPage from "./sub";
 function AddNPage() {
 
     const [smCode, setSmCode] = useState('')
+    const [stage, setStage] = useState<AutocompleteFormat | string | number | null>(null)
+    const [merName, setMerName] = useState<AutocompleteFormat | string | number | null>(null)
+    const [status, setStatus] = useState<AutocompleteFormat | string | number | null>(null)
+    const [options, setOptions] = useState<AutocompleteFormat | string | number | null>(null)
+    const [productType, setProductType] = useState<AutocompleteFormat | string | number | null>(null)
     const [cuspCode, setCuspCode] = useState('')
     const [a1aRouteNum, setA1aRouteNum] = useState('')
     const [season, setSeason] = useState('')
     const [tacRouteNum, setTacRouteNum] = useState('')
     const [value, setValue] = useState('1');
+    const [facAllocation, setFacAllocation] = useState<AutocompleteFormat | string | number | null>(null);
 
     const handleChange = (e: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
     };
+
+    useEffect(() => {
+        const storedata = sessionStorage.getItem('sm');
+        if (storedata !==null) {
+             const data = JSON.parse(storedata);
+            if (data !==null && data.styleMasterCode) {
+                setSmCode(data.styleMasterCode?.toString());
+                setSeason(data.season?.toString())
+                setA1aRouteNum(data.a1aRouteNumber?.toString())
+                setTacRouteNum(data.tacRouteNumber?.toString())
+                setStage(data.stage?.toString())
+                setMerName(data.merAccountName?.toString())
+                setStatus(data.status?.toString())
+                setOptions(data.optionNo?.toString())
+                setProductType(data.productType?.toString())
+                setFacAllocation(data.factoryAllocation?.toString())
+            }
+        }
+    }, [sessionStorage.getItem('sm')]);
 
     return (
         <>
@@ -31,15 +56,15 @@ function AddNPage() {
                   alignItems={'stretch'}
                   direction={'row'}
                   spacing={2}>
-                <Grid item xs={12} md={12}>
-                    <Card>
-                        <CardContent>
-                            <Typography component={'h2'} variant={'h2'}>
-                                Add new Style
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
+                {/*<Grid item xs={12} md={12}>*/}
+                {/*    <Card>*/}
+                {/*        <CardContent>*/}
+                {/*            <Typography component={'h2'} variant={'h2'}>*/}
+                {/*                Add new Style*/}
+                {/*            </Typography>*/}
+                {/*        </CardContent>*/}
+                {/*    </Card>*/}
+                {/*</Grid>*/}
                 <Grid item xs={12} md={12}>
                     <Card>
                         <CardContent>
@@ -49,40 +74,46 @@ function AddNPage() {
                                   direction={'row'}
                                   spacing={2}>
                                 <Grid item xs={12} md={3}>
-                                    <InputLabelMui valueName={smCode} setValue={setSmCode}
+                                    <InputLabelMui fullwidth={true} valueName={smCode} setValue={setSmCode}
                                                    labelName={'Style Master code'}/>
                                 </Grid>
                                 <Grid item xs={12} md={3}>
-                                    <MuiAutocomplete labelname={'Stage'}/>
+                                    <MuiAutocomplete labelname={'Stage'} value={stage}
+                                                     setValue={(newValue) => setStage(newValue)}/>
                                 </Grid>
                                 <Grid item xs={12} md={3}>
-                                    <InputLabelMui valueName={cuspCode} setValue={setCuspCode}
+                                    <InputLabelMui fullwidth={true} valueName={cuspCode} setValue={setCuspCode}
                                                    labelName={'Customter Pattern Code'}/>
                                 </Grid>
                                 <Grid item xs={12} md={3}>
-                                    <InputLabelMui valueName={a1aRouteNum} setValue={setA1aRouteNum}
+                                    <InputLabelMui fullwidth={true} valueName={a1aRouteNum} setValue={setA1aRouteNum}
                                                    labelName={'A1A Route Number'}/>
                                 </Grid>
                                 <Grid item xs={12} md={3}>
-                                    <MuiAutocomplete labelname={'Product Type'}/>
+                                    <MuiAutocomplete labelname={'Product Type'} value={productType}
+                                                     setValue={(newValue) => setProductType(newValue)}/>
                                 </Grid>
                                 <Grid item xs={12} md={3}>
-                                    <MuiAutocomplete labelname={'Factory Allocation'}/>
+                                    <MuiAutocomplete labelname={'Factory Allocation'} value={facAllocation}
+                                                     setValue={(newValue) => setFacAllocation(newValue)}/>
                                 </Grid>
                                 <Grid item xs={12} md={3}>
-                                    <MuiAutocomplete labelname={'Mer Account Name'}/>
+                                    <MuiAutocomplete labelname={'Mer Account Name'} value={merName}
+                                                     setValue={(newValue) => setMerName(newValue)}/>
                                 </Grid>
                                 <Grid item xs={12} md={3}>
-                                    <MuiAutocomplete labelname={'Status'}/>
+                                    <MuiAutocomplete labelname={'Status'} value={status}
+                                                     setValue={(newValue) => setStatus(newValue)}/>
                                 </Grid>
                                 <Grid item xs={12} md={3}>
-                                    <InputLabelMui valueName={season} setValue={setSeason} labelName={'Season'}/>
+                                    <InputLabelMui fullwidth={true} valueName={season} setValue={setSeason} labelName={'Season'}/>
                                 </Grid>
                                 <Grid item xs={12} md={3}>
-                                    <MuiAutocomplete labelname={'Option No'}/>
+                                    <MuiAutocomplete labelname={'Option No'} value={options}
+                                                     setValue={(newValue) => setOptions(newValue)}/>
                                 </Grid>
                                 <Grid item xs={12} md={3}>
-                                    <InputLabelMui valueName={tacRouteNum} setValue={setTacRouteNum}
+                                    <InputLabelMui fullwidth={true} valueName={tacRouteNum} setValue={setTacRouteNum}
                                                    labelName={'Tac Route Number'}/>
                                 </Grid>
                             </Grid>

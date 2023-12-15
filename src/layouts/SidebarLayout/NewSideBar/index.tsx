@@ -72,12 +72,12 @@ const NavigationDrawer = (props: any) => {
     const menuItems = [
         {
             text: 'Style Master',
-            icon: <Avatar sx={{width: 20, height: 20}} variant={'square'} src='/static/images/avatars/house.png'/>,
+            icon: <Avatar sx={{width: 35, height: 35}} variant={'square'} src='/static/images/avatars/house.png'/>,
             to: '/sm/home'
         },
         {
             text: 'Style Master Add',
-            icon: <Avatar sx={{width: 20, height: 20}} variant={'square'} src='/static/images/avatars/groupitem.png'/>,
+            icon: <Avatar sx={{width: 35, height: 35}} variant={'square'} src='/static/images/avatars/additem.png'/>,
             to: '/sm/add'
         },
     ];
@@ -163,12 +163,10 @@ const NavigationDrawer = (props: any) => {
                                                       navigate(setting.to)
                                                   }}
                                                   primaryTypographyProps={{
-                                                      fontWeight: 'normal',
+                                                      fontWeight: 'bold',
                                                       variant: 'body2',
                                                   }}/>
-
                                 </MenuItem>
-
                             ))}
                         </Menu>
                     </Box>
@@ -194,6 +192,7 @@ const NavigationDrawer = (props: any) => {
                                         maxHeight: 35,
                                         justifyContent: open ? "initial" : "center",
                                         px: 2.5,
+                                        m:1
                                     }}
                                     onClick={() => {
                                         setTitle(item.text);
@@ -206,7 +205,6 @@ const NavigationDrawer = (props: any) => {
                                     <ListItemText primary={item.text}
                                                   sx={{opacity: open ? 1 : 0}}
                                                   primaryTypographyProps={{
-                                                      // color: '#5586B0',
                                                       fontWeight: 'normal',
                                                       variant: 'body2',
                                                   }}/>
