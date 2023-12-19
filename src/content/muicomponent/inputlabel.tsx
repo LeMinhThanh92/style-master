@@ -7,6 +7,7 @@ interface InputLabelProps {
     valueName?: string | number;
     setValue: (value: any) => void;
     endAdornment?: any;
+    startAdornment?: any
     type?: string;
     enable?: any
     rownum?: number
@@ -22,6 +23,7 @@ export function InputLabelMui({
                                   valueName,
                                   setValue,
                                   endAdornment,
+                                  startAdornment,
                                   type,
                                   enable,
                                   rownum,
@@ -40,18 +42,19 @@ export function InputLabelMui({
                 {labelName}
             </InputLabel>
             <OutlinedInput
-                           sx={{borderRadius: '16px', background: 'initial'}}
-                           rows={rownum}
-                           multiline={multiline}
-                           id={id}
-                           value={valueName}
-                           label={labelName}
-                           onChange={e => setValue(e.target.value)}
-                           endAdornment={endAdornment}
-                           error={inputError}
-                           type={type}
-                           disabled={enable}
-                           onKeyDown={handleKeyPress}
+                sx={{borderRadius: '16px', background: 'initial'}}
+                rows={rownum}
+                multiline={multiline}
+                id={id}
+                value={valueName}
+                label={labelName}
+                onChange={e => setValue(e.target.value)}
+                endAdornment={endAdornment}
+                startAdornment={startAdornment}
+                error={inputError}
+                type={type}
+                disabled={enable}
+                onKeyDown={handleKeyPress}
             />
         </FormControl>
 

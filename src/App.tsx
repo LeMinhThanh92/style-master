@@ -77,7 +77,7 @@ export default function App() {
                         styleOverrides: {
                             root: {
                                 '&:hover': {
-                                    backgroundColor: '#FFE4E1',
+                                    backgroundColor: '#3C7363',
                                     color:'black'
                                 },
 

@@ -4,12 +4,11 @@ interface DialogProps {
     open: boolean
     setOpen: (open: boolean) => void
     title?: string
-    actionname: string
     content?: any
     fullscreen?: boolean
 }
 
-export function MuiDialog({open, setOpen, title, actionname, content, fullscreen}: DialogProps) {
+export function MuiDialog({open, setOpen, title, content, fullscreen}: DialogProps) {
 
 
     return (
@@ -30,8 +29,7 @@ export function MuiDialog({open, setOpen, title, actionname, content, fullscreen
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={() => setOpen(false)}>{actionname}</Button>
-                <Button onClick={() => setOpen(false)}>Cancel</Button>
+                <Button variant={'outlined'} onClick={() => setOpen(false)}>Cancel</Button>
             </DialogActions>
         </Dialog>
     )

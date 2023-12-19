@@ -1,5 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {Button, CircularProgress, IconButton, Paper} from "@mui/material";
+import {Button, CircularProgress, Grid, IconButton, Paper} from "@mui/material";
+import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs, {Dayjs} from "dayjs";
 import {
     DataGrid,
     GridColDef,
@@ -10,7 +13,6 @@ import {
 import {
     DeleteOutline, FileDownloadOutlined,
     FileUploadOutlined,
-    ImportExportOutlined,
     RefreshOutlined,
     SearchOutlined
 } from "@mui/icons-material";
@@ -49,25 +51,9 @@ type TableInfo = {
     content: StyleMasterContent;
 };
 
-const CustomToolbar = () => {
-    const [searchValue, setSearchValue] = useState<FilterFormat| null>(null);
-    const handleSearch = () => {
-        console.log(searchValue)
-    };
-    return (
-        <GridToolbarContainer>
-            <GridToolbarColumnsButton/>
-            <MuiAutocompletegetfilter labelname={'Search'} wi={'200px'} value={searchValue} setValue={(newValue)=>setSearchValue(newValue)}/>
-            <Button variant={'outlined'} startIcon={<SearchOutlined/>} onClick={handleSearch}>search</Button>
-            <Button variant={'outlined'} startIcon={<RefreshOutlined/>}>refresh</Button>
-            <Button variant={'outlined'} startIcon={<FileUploadOutlined/>}>Import excel</Button>
-            <Button variant={'outlined'} startIcon={<FileDownloadOutlined/>}>Export excel</Button>
-        </GridToolbarContainer>
-    );
-};
-
 
 const TableEmployeeData = () => {
+
 
     const [hd, setHd] = useState<TableInfo | null>(null);
     const {enqueueSnackbar} = useSnackbar();
@@ -80,21 +66,43 @@ const TableEmployeeData = () => {
     const [rows, setRows] = useState<GridRowsProp>([]);
     const [selectedIds, setSelectedIds] = useState<GridRowSelectionModel>([]);
 
-
-
+    const [pStyleMasterCode, setPStyleMasterCode] = useState<string>('')
+    const [pFactoryAllocation, setPFactoryAllocation] = useState<string>('')
+    const [pMerAccountName, setPMerAccountName] = useState<string>('')
+    const [pSeason, setPSeason] = useState<string>('')
+    const [pStage, setPStage] = useState<string>('')
+    const [pProductType, setPProductType] = useState<string>('')
+    const [pFromDate, setPFromDate] = useState<Dayjs|null>(dayjs().subtract(2,'months'))
+    const [pToDate, setPToDate] = useState<Dayjs|null>(dayjs())
+    const [page1, setPage1] = useState<number>(0);
+    const [rowsPerPage1, setRowsPerPage1] = useState(10);
+    const [paginationModel1, setPaginationModel1] = useState({
+        page: page1,
+        pageSize: rowsPerPage1,
+    });
+    const [searchStatus,setSearchStatus]=useState<boolean>(false)
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const {data} = await api.get('/api/v1/style_master', {
+                const {data} = await api.get('/api/v1/style_master/search_over_view', {
                     params: {
-                        page,
-                        rowsPerPage,
+                        pStyleMasterCode:pStyleMasterCode,
+                        pSeason:pSeason,
+                        pStage:pStage,
+                        pCustomerCode:'AD',
+                        pProductType:pProductType,
+                        pFactoryAllocation:pFactoryAllocation,
+                        pMerAccountName:pMerAccountName,
+                        pFromDate:pFromDate?.format('YYYY-MM-DD'),
+                        pToDate:pToDate?.format('YYYY-MM-DD'),
+                        pPageIndex:page1,
+                        pPageSize:rowsPerPage1,
                     },
                 });
-
                 setHd(data?.data);
                 setRows(data?.data?.content?.dataList || []);
+
             } catch {
                 enqueueSnackbar(`Error fetching data`, {
                     variant: 'error',
@@ -104,9 +112,163 @@ const TableEmployeeData = () => {
         };
 
         fetchData();
-    }, [page, rowsPerPage, enqueueSnackbar]);
+    }, [pStyleMasterCode, pSeason,pMerAccountName,pFactoryAllocation,pProductType,page1,rowsPerPage1]);
 
 
+    const CustomToolbar = () => {
+        const {enqueueSnackbar} = useSnackbar();
+        const [searchValue, setSearchValue] = useState<FilterFormat | null>(null);
+
+
+        const  handleRefesh=()=>{
+          setSearchStatus(false)
+
+        };
+        const handleSearch = async () => {
+            console.log(searchValue)
+            if (searchValue !== null) {
+                switch (searchValue?.columnName) {
+                    case 'FactoryAllocation':
+                        setPFactoryAllocation(searchValue?.value);
+                        setPMerAccountName('');
+                        setPProductType('')
+                        setPSeason('')
+                        setPStyleMasterCode('');
+                        setPStage('')
+                        break;
+                    case 'MerAccountName':
+                        setPFactoryAllocation('');
+                        setPMerAccountName(searchValue?.value);
+                        setPProductType('')
+                        setPSeason('')
+                        setPStyleMasterCode('');
+                        setPStage('')
+                        break;
+                    case 'ProductType':
+                        setPFactoryAllocation('');
+                        setPMerAccountName('');
+                        setPProductType(searchValue?.value)
+                        setPSeason('')
+                        setPStyleMasterCode('');
+                        setPStage('')
+                        break;
+                    case 'Season':
+                        setPFactoryAllocation('');
+                        setPMerAccountName('');
+                        setPProductType('')
+                        setPSeason(searchValue?.value)
+                        setPStyleMasterCode('');
+                        setPStage('')
+                        break;
+                    case 'StyleMastercode':
+                        setPFactoryAllocation('');
+                        setPMerAccountName('');
+                        setPProductType('')
+                        setPSeason('')
+                        setPStyleMasterCode(searchValue.value);
+                        setPStage('')
+                        break;
+                    case 'Stage':
+                        setPFactoryAllocation('');
+                        setPMerAccountName('');
+                        setPProductType('')
+                        setPSeason('')
+                        setPStyleMasterCode('');
+                        setPStage(searchValue.value)
+                        break;
+                }
+                setSearchStatus(true)
+            } else {
+                enqueueSnackbar(`Error fetching data`, {
+                    variant: 'error',
+                    anchorOrigin: { vertical: 'top', horizontal: 'center' },
+                });
+            }
+
+        };
+        return (
+            <GridToolbarContainer>
+                <Grid container
+                      justifyContent={'left'}
+                      alignItems={'stretch'}
+                      spacing={1}
+                      direction={'row'}>
+                    <Grid item xs={12} md={12}>
+                        <>
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <div
+                                    className={"flex flex-col md:flex-row m-4"}>
+                                    <DatePicker
+                                        value={pFromDate}
+                                        onChange={(newValue) => setPFromDate(newValue)}
+                                        className={"w-64"}
+                                        format={"YYYY-MM-DD"}
+                                        slotProps={{textField: {size: 'small'}}}
+                                    />
+
+                                    <div className={"h-4 md:w-2"}/>
+
+                                    <DatePicker
+                                        value={pToDate}
+                                        onChange={(newValue) => setPToDate(newValue)}
+                                        className={"w-64"}
+                                        format={"YYYY-MM-DD"}
+                                        slotProps={{textField: {size: 'small'}}}
+                                    />
+                                </div>
+                            </LocalizationProvider>
+                        </>
+                    </Grid>
+                    {/*<Grid item xs={12} md={1}>*/}
+                    {/*    <GridToolbarColumnsButton sx={{height:'54px'}}/>*/}
+                    {/*</Grid>*/}
+                    <Grid item xs={12} md={2}>
+                        <MuiAutocompletegetfilter labelname={'Search'} wi={'100%'} value={searchValue}
+                                                  setValue={(newValue) => setSearchValue(newValue)}/>
+                    </Grid>
+                    <Grid item xs={12} md={1.2}>
+                        <Button fullWidth sx={{height:'54px'}} variant={'outlined'} startIcon={<SearchOutlined/>} onClick={handleSearch}>search</Button>
+                    </Grid>
+                    <Grid item xs={12} md={1.3}>
+                        <Button fullWidth sx={{height:'54px'}} variant={'outlined'} startIcon={<RefreshOutlined/>} onClick={handleRefesh}>refresh</Button>
+                    </Grid>
+                    <Grid item xs={12} md={1.8}>
+                        <Button fullWidth sx={{height:'54px'}} variant={'outlined'} startIcon={<FileUploadOutlined/>}>Import excel</Button>
+                    </Grid>
+                    <Grid item xs={12} md={1.8}>
+                        <Button fullWidth sx={{height:'54px'}} variant={'outlined'} startIcon={<FileDownloadOutlined/>}>Export excel</Button>
+                    </Grid>
+                </Grid>
+
+            </GridToolbarContainer>
+        );
+    };
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const {data} = await api.get('/api/v1/style_master', {
+                    params: {
+                        pPageIndex: page,
+                        pPageSize: rowsPerPage,
+                        pCustomerCode:'AD'
+                    },
+                });
+
+                setHd(data?.data);
+                setRows(data?.data?.content?.dataList || []);
+                sessionStorage.setItem('overview',JSON.stringify(data?.data?.content?.dataList||[]))
+            } catch {
+                enqueueSnackbar(`Error fetching data`, {
+                    variant: 'error',
+                    anchorOrigin: {vertical: 'top', horizontal: 'center'},
+                });
+            }
+        };
+
+        fetchData();
+    }, [page, rowsPerPage]);
 
 
     const columns: GridColDef[] = (hd?.headers || []).map((header) => ({
@@ -117,6 +279,13 @@ const TableEmployeeData = () => {
             header === 'tacRouteNumber' || header === 'a1aRouteNumber' ? 130 : 1000,
         flex: 1,
         headerClassName: 'col-header',
+        renderCell: (params) => (
+            <>
+        {params.colDef.field === 'createdDate'
+            ? new Date(params.value).toISOString().replace('T', ' ').substring(0, 19)
+            : params.value}
+      </>
+        ),
         hideable: header === 'id' || header === 'status' || header === 'totalRowNum' || header === 'styleMasterId' ? true : false
     }));
 
@@ -131,35 +300,36 @@ const TableEmployeeData = () => {
         const checkdata = sessionStorage.getItem('sm')
         if (checkdata) {
             const data = JSON.parse(checkdata)
-            if (params.row.styleMasterId!==data.styleMasterId) {
+            if (params.row.styleMasterId !== data.styleMasterId) {
                 try {
                     const {data} = await api.get('/api/v1/style_master/style_details', {
                         params: {
-                            pStyleMasterId:params.row.styleMasterId
+                            pStyleMasterId: params.row.styleMasterId
                         },
                     });
                     sessionStorage.setItem('sm', JSON.stringify(data?.data.content))
                     setOpen(true);
 
-                }catch{
+                } catch {
                     enqueueSnackbar(`Error fetching data`, {
                         variant: 'error',
                         anchorOrigin: {vertical: 'top', horizontal: 'center'},
                     });
                 }
+            } else {
+                setOpen(true);
             }
-            else {setOpen(true);}
         } else {
             console.log(params.row)
             try {
                 const {data} = await api.get('/api/v1/style_master/style_details', {
                     params: {
-                        pStyleMasterId:params.row.styleMasterId
+                        pStyleMasterId: params.row.styleMasterId
                     },
                 });
                 sessionStorage.setItem('sm', JSON.stringify(data?.data.content))
                 setOpen(true)
-            }catch{
+            } catch {
                 enqueueSnackbar(`Error fetching data`, {
                     variant: 'error',
                     anchorOrigin: {vertical: 'top', horizontal: 'center'},
@@ -200,11 +370,19 @@ const TableEmployeeData = () => {
                     getRowId={(row) => row.id}
                     pageSizeOptions={[10, 25, 50]}
                     paginationMode={'server'}
-                    paginationModel={paginationModel}
+                    paginationModel={searchStatus ? paginationModel1 : paginationModel}
                     onPaginationModelChange={(model) => {
-                        setPage(model.page);
-                        setRowsPerPage(model.pageSize);
-                        setPaginationModel(model);
+                        if(searchStatus){
+                            setPage1(model.page);
+                            setRowsPerPage1(model.pageSize);
+                            setPaginationModel1(model);
+                        }else {
+                            setPage(model.page);
+                            setRowsPerPage(model.pageSize);
+                            setPaginationModel(model);
+                        }
+
+
                     }}
                     columns={columns.filter((column) => !column.hideable)}
                     rowCount={hd?.content.totalElements || 0}
@@ -222,7 +400,7 @@ const TableEmployeeData = () => {
                     <CircularProgress style={{}}/>
                 </div>
             )}
-            <MuiDialog open={open} setOpen={setOpen} actionname={'save'} title={'Style Master Description'}
+            <MuiDialog open={open} setOpen={setOpen} title={'Style Master Description'}
                        content={<AddPage/>}/>
         </Paper>
 

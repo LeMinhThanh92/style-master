@@ -2,10 +2,12 @@ import {Card, CardContent, Grid} from "@mui/material";
 import {AutocompleteFormat, MuiAutocomplete} from "../../muicomponent/autocomplete";
 import {InputLabelMui} from "../../muicomponent/inputlabel";
 import {useEffect, useState} from "react";
+import {MuiAutocompleteBondingProcess} from "./component/autocompleteBondingProcess";
+import {FilterFormat} from "../../home/getfilerdata";
 
 function BPage() {
 
-    const [bProcess, setBProcess] = useState<AutocompleteFormat | string | number | null>(null)
+    const [bProcess, setBProcess] = useState<FilterFormat | null>(null)
     const [bPosition, setBPosition] = useState<string | number | undefined>(undefined)
     const [bTotalSMV, setBTotalSMV] = useState<string | number | undefined>(undefined)
     const [lPosition, setLPosition] = useState<string | number | undefined>(undefined)
@@ -17,7 +19,11 @@ function BPage() {
         if (storedata !==null) {
             const data = JSON.parse(storedata);
             if (data !==null && data.styleMasterCode) {
-                setBProcess(data.bondingProcess?.toString())
+                setBProcess({
+                    id: 1,
+                    columnName: 'A1',
+                    value: (data.bondingProcess?.toString()) ? data.bondingProcess?.toString() : 'Bonding'
+                })
                 setBPosition(data.bondingPosition?.toString())
                 setBTotalSMV(data.bondingTotalSMV?.toString())
                 setLPosition(data.laserPosition?.toString())
@@ -36,7 +42,7 @@ function BPage() {
                       spacing={2}
                       direction={'row'}>
                     <Grid item xs={12} md={3}>
-                        <MuiAutocomplete labelname={'BondingProcess'} value={bProcess}
+                        <MuiAutocompleteBondingProcess labelname={'BondingProcess'} value={bProcess}
                                          setValue={(newValue) => setBProcess(newValue)}/>
                     </Grid>
                     <Grid item xs={12} md={3}>
