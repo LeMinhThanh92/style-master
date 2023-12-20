@@ -1,6 +1,5 @@
 import {Box, Button, ButtonGroup, Card, CardContent, Grid, Tab} from "@mui/material";
 import {TabContext, TabList, TabPanel} from "@mui/lab";
-import {AutocompleteFormat, MuiAutocomplete} from "../muicomponent/autocomplete";
 import {InputLabelMui} from "../muicomponent/inputlabel";
 import React, {useEffect, useState} from "react";
 import SamPage from "./sam";
@@ -108,7 +107,7 @@ function AddNPage() {
 
 
     return (
-            <>
+
                 <Grid container
                       justifyContent={'left'}
                       alignItems={'stretch'}
@@ -226,7 +225,7 @@ function AddNPage() {
                         </Box>
                     </Grid>
                 </Grid>
-            </>
+
     )
 }
 

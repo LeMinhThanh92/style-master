@@ -72,12 +72,12 @@ const NavigationDrawer = (props: any) => {
     const menuItems = [
         {
             text: 'Style Master',
-            icon: <Avatar sx={{width: 35, height: 35}} variant={'square'} src='/static/images/avatars/house.png'/>,
+            icon: <Avatar sx={{width: 35, height: 35}} variant={'square'} src={process.env.PUBLIC_URL +'/static/images/avatars/house.png'}/>,
             to: '/sm/home'
         },
         {
             text: 'Style Master Add',
-            icon: <Avatar sx={{width: 35, height: 35}} variant={'square'} src='/static/images/avatars/additem.png'/>,
+            icon: <Avatar sx={{width: 35, height: 35}} variant={'square'} src={process.env.PUBLIC_URL +'/static/images/avatars/additem.png'}/>,
             to: '/sm/add'
         },
     ];
@@ -127,7 +127,7 @@ const NavigationDrawer = (props: any) => {
                             <Box>
                                 <Stack direction={'row'} spacing={1} onClick={handleOpenUserMenu}>
                                     <IconButton sx={{p: 0}}>
-                                        <Avatar alt="Image" src="/static/images/avatars/man.png"/>
+                                        <Avatar alt="Image" src={process.env.PUBLIC_URL +"/static/images/avatars/man.png"}/>
                                     </IconButton>
                                     <Typography justifyContent={'center'} alignItems={'center'} display={'flex'}>
                                         {userData.accountName}

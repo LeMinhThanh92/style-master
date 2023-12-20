@@ -37,13 +37,13 @@ export function MuiAutocompletegetfilter({
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await api.get('/api/v1/style_master/get_filter',{
-                    params:{
-                        pCustomerCode:'AD'
+                const response = await api.get('/api/v1/style_master/get_filter', {
+                    params: {
+                        pCustomerCode: 'AD'
                     }
                 });
                 setData(response.data?.data);
-                sessionStorage.setItem('filter',JSON.stringify(response.data?.data))
+                sessionStorage.setItem('filter', JSON.stringify(response.data?.data))
             } catch (error) {
                 enqueueSnackbar(`Error fetching data`, {
                     variant: 'error',
@@ -56,88 +56,26 @@ export function MuiAutocompletegetfilter({
     }, [sessionStorage.getItem('filter')]);
 
     const AutocompleteDto = (data?.content || [])
-        .filter((filter: FilterFormat) => filter.columnName !== 'OptionNo' && filter.columnName !== 'Status' && filter.columnName!=='BondingProcess')
+        .filter((filter: FilterFormat) => filter.columnName !== 'OptionNo' && filter.columnName !== 'Status' && filter.columnName !== 'BondingProcess')
         .map((filter: FilterFormat) => ({
             id: filter.id,
-            columnName:filter.columnName,
+            columnName: filter.columnName,
             value: filter.value,
         }));
 
-    const AutocompleteProductTypeDto = (data?.content || [])
-        .filter((filter: FilterFormat) => filter.columnName === 'ProductType')
-        .map((filter: FilterFormat) => ({
-            id: filter.id,
-            columnName:filter.columnName,
-            value: filter.value,
-        }));
-    const AutocompleteSeasonDto = (data?.content || [])
-        .filter((filter: FilterFormat) => filter.columnName === 'Season')
-        .map((filter: FilterFormat) => ({
-            id: filter.id,
-            columnName:filter.columnName,
-            value: filter.value,
-        }));
-    const AutocompleteFactoryAllocationDto = (data?.content || [])
-        .filter((filter: FilterFormat) => filter.columnName === 'FactoryAllocation')
-        .map((filter: FilterFormat) => ({
-            id: filter.id,
-            columnName:filter.columnName,
-            value: filter.value,
-        }));
-    const AutocompleteMerAccountNameDto = (data?.content || [])
-        .filter((filter: FilterFormat) => filter.columnName === 'MerAccountName')
-        .map((filter: FilterFormat) => ({
-            id: filter.id,
-            columnName:filter.columnName,
-            value: filter.value,
-        }));
-    const AutocompleteStageDto = (data?.content || [])
-        .filter((filter: FilterFormat) => filter.columnName === 'Stage')
-        .map((filter: FilterFormat) => ({
-            id: filter.id,
-            columnName:filter.columnName,
-            value: filter.value,
-        }));
-    const AutocompleteStyleMasterCodeDto = (data?.content || [])
-        .filter((filter: FilterFormat) => filter.columnName === 'StyleMastercode')
-        .map((filter: FilterFormat) => ({
-            id: filter.id,
-            columnName:filter.columnName,
-            value: filter.value,
-        }));
-    const AutocompleteStatusDto = (data?.content || [])
-        .filter((filter: FilterFormat) => filter.columnName === 'Status')
-        .map((filter: FilterFormat) => ({
-            id: filter.id,
-            columnName:filter.columnName,
-            value: filter.value,
-        }));
-    const AutocompleteOptionNoDto = (data?.content || [])
-        .filter((filter: FilterFormat) => filter.columnName === 'OptionNo')
-        .map((filter: FilterFormat) => ({
-            id: filter.id,
-            columnName:filter.columnName,
-            value: filter.value,
-        }));
-    const AutocompleteBondingProcessDto = (data?.content || [])
-        .filter((filter: FilterFormat) => filter.columnName === 'BondingProcess')
-        .map((filter: FilterFormat) => ({
-            id: filter.id,
-            columnName:filter.columnName,
-            value: filter.value,
-        }));
-
-    sessionStorage.setItem('Season',JSON.stringify(AutocompleteSeasonDto))
-    sessionStorage.setItem('ProductType',JSON.stringify(AutocompleteProductTypeDto))
-    sessionStorage.setItem('FactoryAllocation',JSON.stringify(AutocompleteFactoryAllocationDto))
-    sessionStorage.setItem('Stage',JSON.stringify(AutocompleteStageDto))
-    sessionStorage.setItem('MerAccountName',JSON.stringify(AutocompleteMerAccountNameDto))
-    sessionStorage.setItem('StyleMasterCode',JSON.stringify(AutocompleteStyleMasterCodeDto))
-    sessionStorage.setItem('Status',JSON.stringify(AutocompleteStatusDto))
-    sessionStorage.setItem('OptionNo',JSON.stringify(AutocompleteOptionNoDto))
-    sessionStorage.setItem('BondingProcess',JSON.stringify(AutocompleteBondingProcessDto))
-
-
+    const mapColumns=['Season','ProductType','FactoryAllocation','Stage','MerAccountName','StyleMasterCode','Status','OptionNo','BondingProcess']
+    const mapToDto=(columm:string)=>
+        (data?.content ||[])
+            .filter((filter:FilterFormat)=>filter.columnName===columm)
+            .map((filter)=>({
+                id: filter.id,
+                columnName: filter.columnName,
+                value: filter.value,
+            }))
+    mapColumns.forEach((column)=>{
+        const dataDto=mapToDto(column)
+        sessionStorage.setItem(column,JSON.stringify(dataDto))
+    })
 
     return (
         <Stack spacing={2}>
@@ -155,3 +93,5 @@ export function MuiAutocompletegetfilter({
         </Stack>
     );
 }
+
+

@@ -54,7 +54,7 @@ type TableInfo = {
 
 const TableEmployeeData = () => {
 
-
+    const [deleteStatus,setDeleteStatus]=useState<boolean>(true)
     const [hd, setHd] = useState<TableInfo | null>(null);
     const {enqueueSnackbar} = useSnackbar();
     const [page, setPage] = useState<number>(0);
@@ -81,6 +81,8 @@ const TableEmployeeData = () => {
         pageSize: rowsPerPage1,
     });
     const [searchStatus,setSearchStatus]=useState<boolean>(false)
+    const [searchValue, setSearchValue] = useState<FilterFormat | null>(null);
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -117,7 +119,6 @@ const TableEmployeeData = () => {
 
     const CustomToolbar = () => {
         const {enqueueSnackbar} = useSnackbar();
-        const [searchValue, setSearchValue] = useState<FilterFormat | null>(null);
 
 
         const  handleRefesh=()=>{
@@ -236,6 +237,9 @@ const TableEmployeeData = () => {
                     </Grid>
                     <Grid item xs={12} md={1.8}>
                         <Button fullWidth sx={{height:'54px'}} variant={'outlined'} startIcon={<FileDownloadOutlined/>}>Export excel</Button>
+                    </Grid>
+                    <Grid item xs={12} md={1.3}>
+                        <Button disabled={deleteStatus} fullWidth sx={{height:'54px',color:'red',borderColor:'red'}} variant={'outlined'} startIcon={<DeleteOutline />}>delete</Button>
                     </Grid>
                 </Grid>
 
@@ -390,6 +394,7 @@ const TableEmployeeData = () => {
                     disableRowSelectionOnClick
                     onRowSelectionModelChange={(rowSelectionModel) => {
                         setSelectedIds(rowSelectionModel)
+                        rowSelectionModel.length>0 ? setDeleteStatus(false) : setDeleteStatus(true)
                     }}
                     onRowDoubleClick={handleDoubleClick}
                 />
