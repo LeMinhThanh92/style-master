@@ -1,4 +1,5 @@
 import {Autocomplete, Stack, TextField} from '@mui/material'
+import {useMemo} from "react";
 
 export interface FilterFormat {
     id: number;
@@ -17,7 +18,14 @@ interface AutocompleteProps {
 
 
 export function MuiAutocompleteFactoryAllocation({labelname, display, value, setValue, wi}: AutocompleteProps) {
-    const AutocompleteDto = JSON.parse(sessionStorage.getItem('FactoryAllocation') || '[]');
+     // const AutocompleteDto = JSON.parse(sessionStorage.getItem('FactoryAllocation') || '[]');
+
+
+    const AutocompleteDto = useMemo(() => {
+        return JSON.parse(sessionStorage.getItem('FactoryAllocation') || '[]');
+        console.log('render')
+    }, [sessionStorage.getItem('FactoryAllocation')]);
+
 
     return (
         <Stack spacing={2}>

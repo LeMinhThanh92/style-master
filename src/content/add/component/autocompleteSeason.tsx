@@ -1,5 +1,5 @@
 import {Autocomplete, Stack, TextField} from '@mui/material'
-import {useEffect} from "react";
+import {useEffect, useMemo} from "react";
 
 export interface FilterFormat {
     id: number;
@@ -20,7 +20,10 @@ interface AutocompleteProps {
 
 export function MuiAutocompleteSeason({labelname, display, value, setValue, wi}: AutocompleteProps) {
 
-    const AutocompleteDto = JSON.parse(sessionStorage.getItem('Season') || '[]');
+    // const AutocompleteDto = JSON.parse(sessionStorage.getItem('Season') || '[]');
+    const AutocompleteDto = useMemo(() => {
+        return JSON.parse(sessionStorage.getItem('Season') || '[]');
+    }, [sessionStorage.getItem('Season')]);
     return (
 
         <Stack spacing={2} >

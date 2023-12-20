@@ -52,7 +52,9 @@ export function MuiAutocompletegetfilter({
             }
         };
 
-        fetchData();
+        if (!data) {
+            fetchData();
+        }
     }, [sessionStorage.getItem('filter')]);
 
     const AutocompleteDto = (data?.content || [])
