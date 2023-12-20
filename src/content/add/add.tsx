@@ -17,7 +17,7 @@ import {MuiAutocompleteProductType} from "./component/autocompleteProductType";
 import {MuiAutocompleteFactoryAllocation} from "./component/autocompleteFactoryAllocation";
 import {MuiAutocompleteMerAccountName} from "./component/autocompleteMerAccountName";
 import {MuiAutocompleteStatus} from "./component/autocompleteStatus";
-import {MuiAutocompleteOptionNo} from "./component/AutocompleteOptionNo";
+import {MuiAutocompleteOptionNo} from "./component/autocompleteOptionNo";
 
 function AddNPage() {
 
@@ -57,11 +57,6 @@ function AddNPage() {
         enqueueSnackbar('Add new',{variant:'success',anchorOrigin:{vertical:'bottom',horizontal:'right'}})
     }
 
-    let AutocompleteStatusDto:any
-    const getData= sessionStorage.getItem('Status')
-    if (getData){
-        AutocompleteStatusDto=JSON.parse(getData);
-    }
 
     useEffect(() => {
         const storedata = sessionStorage.getItem('sm');

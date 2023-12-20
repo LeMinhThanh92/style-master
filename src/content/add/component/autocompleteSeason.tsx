@@ -1,4 +1,5 @@
 import {Autocomplete, Stack, TextField} from '@mui/material'
+import {useEffect} from "react";
 
 export interface FilterFormat {
     id: number;
@@ -14,27 +15,27 @@ interface AutocompleteProps {
     setValue?: (newValue: FilterFormat | null) => void;
 }
 
-let AutocompleteDto:any
-const getData= sessionStorage.getItem('Season')
-if (getData){
-    AutocompleteDto=JSON.parse(getData);
-}
+
 
 
 export function MuiAutocompleteSeason({labelname, display, value, setValue, wi}: AutocompleteProps) {
+
+    const AutocompleteDto = JSON.parse(sessionStorage.getItem('Season') || '[]');
     return (
-        AutocompleteDto && AutocompleteDto.length > 0 && (
-        <Stack spacing={2}>
-            <Autocomplete
-                options={AutocompleteDto}
-                sx={{display: display, width: wi,pb:'3px'}}
-                renderInput={(params) => <TextField {...params} label={labelname}/>}
-                value={value}
-                onChange={(_, newValue) => setValue && setValue(newValue)}
-                getOptionLabel={(option) => option.value || ''}
-                isOptionEqualToValue={(option, value) => option?.value === value?.value}
-            />
+
+        <Stack spacing={2} >
+            {AutocompleteDto !== undefined && (
+                <Autocomplete
+                    options={AutocompleteDto}
+                    sx={{display: display, width: wi, pb: '3px'}}
+                    renderInput={(params) => <TextField {...params} label={labelname}/>}
+                    value={value}
+                    onChange={(_, newValue) => setValue && setValue(newValue)}
+                    getOptionLabel={(option) => option.value}
+                    isOptionEqualToValue={(option, value) => option.value === value?.value}
+                />
+            )}
         </Stack>
-        )
+
     );
 }

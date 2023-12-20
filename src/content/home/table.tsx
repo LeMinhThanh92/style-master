@@ -125,7 +125,6 @@ const TableEmployeeData = () => {
 
         };
         const handleSearch = async () => {
-            console.log(searchValue)
             if (searchValue !== null) {
                 switch (searchValue?.columnName) {
                     case 'FactoryAllocation':
@@ -320,7 +319,6 @@ const TableEmployeeData = () => {
                 setOpen(true);
             }
         } else {
-            console.log(params.row)
             try {
                 const {data} = await api.get('/api/v1/style_master/style_details', {
                     params: {

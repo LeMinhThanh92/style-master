@@ -32,7 +32,7 @@ export function MuiAutocompletegetfilter({
                                              wi,
                                          }: AutocompleteProps) {
     const {enqueueSnackbar} = useSnackbar();
-    const [data, setData] = useState<FilterInfo | undefined>();
+    const [data, setData] = useState<FilterInfo>();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -53,13 +53,8 @@ export function MuiAutocompletegetfilter({
         };
 
         fetchData();
-    }, []);
+    }, [sessionStorage.getItem('filter')]);
 
-    // const AutocompleteDto = (data?.content || []).map((filter: FilterFormat) => ({
-    //     id: filter.id,
-    //     columnName: filter.columnName,
-    //     value: filter.value,
-    // }));
     const AutocompleteDto = (data?.content || [])
         .filter((filter: FilterFormat) => filter.columnName !== 'OptionNo' && filter.columnName !== 'Status' && filter.columnName!=='BondingProcess')
         .map((filter: FilterFormat) => ({
@@ -141,6 +136,8 @@ export function MuiAutocompletegetfilter({
     sessionStorage.setItem('Status',JSON.stringify(AutocompleteStatusDto))
     sessionStorage.setItem('OptionNo',JSON.stringify(AutocompleteOptionNoDto))
     sessionStorage.setItem('BondingProcess',JSON.stringify(AutocompleteBondingProcessDto))
+
+
 
     return (
         <Stack spacing={2}>

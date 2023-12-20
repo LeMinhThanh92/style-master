@@ -14,25 +14,25 @@ interface AutocompleteProps {
     setValue?: (newValue: FilterFormat | null ) => void;
 }
 
-let AutocompleteDto:any
-const getData= sessionStorage.getItem('Stage')
-if (getData){
-    AutocompleteDto=JSON.parse(getData);
-}
+
 
 
 export function MuiAutocompleteStage({labelname, display, value, setValue, wi}: AutocompleteProps) {
+
+    const AutocompleteDto = JSON.parse(sessionStorage.getItem('Stage') || '[]');
     return (
-        <Stack spacing={2}>
-            <Autocomplete
-                options={AutocompleteDto}
-                sx={{display: display, width: wi,pb:'3px'}}
-                renderInput={(params) => <TextField {...params} label={labelname}/>}
-                value={value}
-                onChange={(_, newValue) => setValue && setValue(newValue)}
-                getOptionLabel={(option) => option.value || ''}
-                isOptionEqualToValue={(option, value) => option.value === value?.value}
-            />
+        <Stack spacing={2} >
+            {AutocompleteDto !== undefined && (
+                <Autocomplete
+                    options={AutocompleteDto}
+                    sx={{display: display, width: wi, pb: '3px'}}
+                    renderInput={(params) => <TextField {...params} label={labelname}/>}
+                    value={value}
+                    onChange={(_, newValue) => setValue && setValue(newValue)}
+                    getOptionLabel={(option) => option.value}
+                    isOptionEqualToValue={(option, value) => option.value === value?.value}
+                />
+            )}
         </Stack>
     );
 }

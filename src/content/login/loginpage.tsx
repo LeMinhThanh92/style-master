@@ -14,6 +14,7 @@ import {KeyOutlined, PersonOutline, VisibilityOffOutlined, VisibilityOutlined} f
 import axios from 'axios';
 import {useSnackbar} from "notistack";
 
+
 function LgPage() {
 
     const {enqueueSnackbar} = useSnackbar();
@@ -23,7 +24,6 @@ function LgPage() {
     const [password, setPassword] = useState<string>('');
     const [showpass, setShowpass] = useState(false)
     const [hasError, setError] = useState(false)
-
 
     useEffect(() => {
         const storedUserData = localStorage.getItem('user');
@@ -44,6 +44,7 @@ function LgPage() {
     }
 
     const onSubmitlogin = () => {
+
         axios.post('http://14.241.167.185:8080/api/v1/user/authenticate', {
             'username': username,
             'password': password
